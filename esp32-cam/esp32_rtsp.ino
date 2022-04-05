@@ -32,7 +32,7 @@ void setup()
     delay(10000);
   }
 
-  esp_err_t err = cam.init(esp32cam_aithinker_config);
+  esp_err_t err = cam.init(esp_eye_config);
   if (err != ESP_OK)
   {
     Serial.printf("Camera init failed with error 0x%x", err);

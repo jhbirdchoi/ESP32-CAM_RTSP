@@ -6,7 +6,12 @@
 #include "src/OV2640Streamer.h"
 #include "src/CRtspSession.h"
 
-#include "src/wifi_config.h"
+const char *ssid = "U+Net3C88";
+const char *password = "B9@6FGCFF9";
+
+const IPAddress ip(192, 168, 0, 100);
+const IPAddress gatway(192, 168, 0, 1);
+const IPAddress subnet(255, 255, 255, 0); 
 
 OV2640 cam;
 
@@ -18,19 +23,23 @@ void setup()
   Serial.setDebugOutput(true);
   Serial.println();
 
-  WiFi.config(ip, gatway, subnet);
+  Serial.print("Attempting to connect to SSID: ");
+
+  WiFi.begin(ssid, password);
 
   // attempt to connect to Wifi network:
   while (WiFi.status() != WL_CONNECTED)
   {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    WiFi.begin(ssid, password);
-
     // wait 10 seconds for connection:
     delay(10000);
+
+    Serial.print(".");
   }
+
+  Serial.println(ssid);
+  Serial.print("IP address:\t");
+  IPAddress myIP = WiFi.localIP();
+  Serial.println(myIP);
 
   esp_err_t err = cam.init(esp_eye_config);
   if (err != ESP_OK)
